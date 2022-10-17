@@ -8,7 +8,6 @@ class PlayfairCipher:
         self.matrix = []
         self.pairs = []
         self.encode(message)
-        
 
     def create_matrix(self):
         result = list(OrderedDict.fromkeys(self.key))
@@ -61,7 +60,6 @@ class PlayfairCipher:
                     k += 1
             self.matrix.append(temp)
 
-
     def __print_matrix(self):
         for i in range(5):
             for j in range(5):
@@ -72,20 +70,20 @@ class PlayfairCipher:
         message = message.upper().replace(" ", "")
         i = 0
         while i < len(message):
-            if i+1 < len(message):
-                if message[i] != message[i+1]:
-                    self.pairs.append(message[i]+message[i+1])
-                    i+=2
+            if i + 1 < len(message):
+                if message[i] != message[i + 1]:
+                    self.pairs.append(message[i] + message[i + 1])
+                    i += 2
                 else:
-                    self.pairs.append(message[i]+"X")
-                    i+=1
+                    self.pairs.append(message[i] + "X")
+                    i += 1
             else:
-                self.pairs.append(message[i]+"X")
-                i+=1
+                self.pairs.append(message[i] + "X")
+                i += 1
 
     def encode(self, message):
         self.create_matrix()
-        self.format_message(message)  
+        self.format_message(message)
         self.__print_matrix()
         print()
         print(self.pairs)
@@ -94,23 +92,29 @@ class PlayfairCipher:
         for strings in self.pairs:
             index1 = self.__find_in_list_of_list(self.matrix, strings[0])
             index2 = self.__find_in_list_of_list(self.matrix, strings[1])
-            
+
             if index1[0] == index2[0]:
-                solutions.append(self.matrix[index1[0]][(index1[1]+1) % 5]+self.matrix[index2[0]][(index2[1]+1) % 5])
+                solutions.append(
+                    self.matrix[index1[0]][(index1[1] + 1) % 5]
+                    + self.matrix[index2[0]][(index2[1] + 1) % 5]
+                )
             elif index1[1] == index2[1]:
-                solutions.append(self.matrix[(index1[0]+1)%5][index1[1]]+self.matrix[(index2[0]+1)%5][index2[1]])  
+                solutions.append(
+                    self.matrix[(index1[0] + 1) % 5][index1[1]]
+                    + self.matrix[(index2[0] + 1) % 5][index2[1]]
+                )
             else:
-                solutions.append(self.matrix[index1[0]][index2[1]] + self.matrix[index2[0]][index1[1]])
+                solutions.append(
+                    self.matrix[index1[0]][index2[1]]
+                    + self.matrix[index2[0]][index1[1]]
+                )
 
         print(solutions)
 
-
-    def __find_in_list_of_list(self,mylist, char):
+    def __find_in_list_of_list(self, mylist, char):
         for sub_list in mylist:
             if char == "I" or char == "J":
                 if "I/J" in sub_list:
-                    return(mylist.index(sub_list), sub_list.index("I/J"))
+                    return (mylist.index(sub_list), sub_list.index("I/J"))
             if char in sub_list:
                 return (mylist.index(sub_list), sub_list.index(char))
-
-    
